@@ -6,6 +6,39 @@ from Dot import Dot
 class Explosion:
 
     #### to complete
+    def __init__(self,canvas,booms,x,y):
+        self.canvas = canvas
+        self.booms=booms
+        self.x = x
+        self.y = y
+        self.rad = 80
+        self.dots = 15
+        self.add_explosion()
+        
+    
+    def activate(self):
+        x = self.x
+        y = self.y
+        rad = self.rad
+
+    def deactivate(self):
+      print('deac')
+
+    def is_active(self):
+      return True
+    
+    def add_explosion(self):
+     dotList = []
+     for rad in self.rad:
+      if self.is_active() == True:
+        for dots in self.dots:
+            deg = random.randint(1,360)
+            __x = math.cos(deg)*rad
+            __y = math.sin(deg)*rad
+            dotList.append(Dot(self.canvas,__x+self.x,__y+self.y,"rainbow",True))
+
+
+
 
 
 
