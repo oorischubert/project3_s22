@@ -34,15 +34,13 @@ class Explosion:
             self.rad = self.rad+1
     
     def add_explosion(canvas,x,y):
-     for rad in range(80):
+      for rad in range(80):
         time.sleep(0.03)
-        print(rad)
-        for i in range(15):
+        for ring in range(15):
             deg = random.randint(1,360)
-            print(deg)
             __x = math.cos(deg)*rad
             __y = math.sin(deg)*rad
-            return Dot(canvas,__x+x,__y+y,"rainbow",True)
+            Dot(canvas,__x+x,__y+y,"rainbow",True)
             
 
 
