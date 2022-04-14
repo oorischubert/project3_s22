@@ -14,7 +14,7 @@ def stop_game():
     global game_over
     game_over=True
     
-def shoot 
+def shoot
     ####### to complete
 
 
