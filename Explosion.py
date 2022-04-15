@@ -31,15 +31,14 @@ class Explosion:
         if self.is_active() == True:
             self.rad = self.rad+1
     
-    def add_explosion(self,canvas,booms,x,y):
-     for rad in self.rad:
-      if self.is_active() == True:
-        time.sleep(0.03)
-        for dots in self.dots:
+    def add_explosion(self,canvas,booms,x,y,color,radius):
+      booms.append(Explosion)
+      while self.is_active == True:
+        for ring in range(15):
             deg = random.randint(1,360)
-            __x = math.cos(deg)*rad
-            __y = math.sin(deg)*rad
-            self.dotList.append(Dot(canvas,__x+x,__y+y,"rainbow",True))
+            __x = math.cos(deg)*self.rad
+            __y = math.sin(deg)*self.rad
+            Dot(canvas,__x+x,__y+y,"rainbow",True)
 
 
 
@@ -73,7 +72,7 @@ def main():
         booms=[]
         
         # Tkinter binding action (mouse click)
-        root.bind("<Button-1>",lambda e:Explosion.add_explosion(canvas,booms,e.x,e.y) )
+        root.bind("<Button-1>",lambda e:Explosion.add_explosion(canvas,booms,e.x,e.y,'rainbow',80) )
         
         ############################################
         ####### start simulation

@@ -25,7 +25,7 @@ class Dot:
       if self.color == 'rainbow':
           return random.choice(colors)
       else:
-          return self.colors
+          return self.color
 
     
 
