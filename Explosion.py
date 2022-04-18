@@ -7,39 +7,51 @@ class Explosion:
     dotList = []
     #### to complete
     def __init__(self,canvas,booms,x,y):
+        self.tag="explosion"
         self.canvas = canvas
         self.booms=booms
         self.x = x
         self.y = y
-        self.rad = 80
+        self.maxRad = 80
+        self.currentRad = 0
         self.dots = 15
+        self.__active = False
+        self.dotList = []
+        self.activate()
+        
       
         
     
     def activate(self):
-        x = self.x
-        y = self.y
-        rad = self.rad
+        self.__active = True
 
     def deactivate(self):
-      print('deac')
+      for dot in self.dotList:
+       self.canvas.delete(dot)
+      self.__active = False
+      print('deactivated')
 
     def is_active(self):
-      return True
+      return self.__active
     
     def next(self):
-        if self.is_active() == True:
-            self.rad = self.rad+1
-    
-    def add_explosion(self,canvas,booms,x,y,color,radius):
-      booms.append(Explosion)
-      while self.is_active == True:
-        for ring in range(15):
-            deg = random.randint(1,360)
-            __x = math.cos(deg)*self.rad
-            __y = math.sin(deg)*self.rad
-            Dot(canvas,__x+x,__y+y,"rainbow",True)
-
+           self.currentRad = self.currentRad + 1
+           if self.is_active() == True:
+            for ring in range(15):
+              deg = random.randint(1,360)
+              __x = math.cos(deg)*self.currentRad
+              __y = math.sin(deg)*self.currentRad
+              dot = Dot(self.canvas,__x+self.x,__y+self.y,"rainbow",True)
+              self.dotList.append(dot)
+            if self.currentRad >= self.maxRad:
+                self.deactivate()
+               
+                
+   
+    def add_explosion(canvas,booms,x,y,color,radius):
+      newExp = Explosion(canvas,booms,x,y)
+      booms.append(newExp)
+      
 
 
 
@@ -85,6 +97,8 @@ def main():
                 
             # check active status of list of booms (for debugging)
             for b in booms:
+                if b.is_active() == False:
+                    booms.pop(booms.index(b))
                 print(b.is_active(),end=" ")
             print()
 
