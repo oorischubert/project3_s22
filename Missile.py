@@ -3,37 +3,41 @@ from tkinter import *
 import time,random
 
 class Missile:
-    def __init__(self,canvas,cHeight=0,pixelInc=5,color='orange',width=8,mHeight=25):
+    def __init__(self,canvas,cHeight=0,pixelInc=5,color='orange'):
         self.canvas = canvas
         self.cHeight = cHeight
         self.pixelInc = pixelInc
         self.color = color
-        self.width = width
-        self.mHeight = mHeight
+        self.width = 8
+        self.mHeight = 2.5
         self.__active = False
 
-    def activate(self,x,y):
+    def activate(self,y,x):
         self.x = x
         self.y = y
-        self.missile=self.canvas.create_rectangle(x,y,x+self.width,y+self.mHeight,outline=self.color,fill=self.color)
+        self.missile=self.canvas.create_rectangle(x,800,x+2.5,800-self.width,outline=self.color,fill=self.color)
         self.__active = True
     
     def deactivate(self):
+        #need to delete!
         self.__active = False
     
     def is_active(self):
         return self.__active
     
     def next(self):
-        self.mHeight = self.mHeight + 1
-        if self.is_active() == True:
-            self.canvas.move(self.missile,-self.pixelInc,0)
+        self.mHeight = self.mHeight + self.pixelInc
         if self.mHeight >= self.cHeight:
             self.deactivate()
+        if self.is_active() == True:
+            self.canvas.move(self.missile,0,-self.pixelInc)
     
     def add_missile(canvas,missiles,x,cMax=0,pInc=5,color='orange'):
-      newMissile = Missile(canvas,x,pInc,color,cMax)
-      newMissile.activate(x,cMax)
+      for m in missiles:
+            if m.is_active() != True:
+                missiles.pop(missiles.index(m))
+      newMissile = Missile(canvas,cMax,pInc,color)
+      newMissile.activate(cMax,x)
       newMissile.next()
       missiles.append(newMissile)
 
@@ -71,11 +75,12 @@ def main():
             x = random.randint(0,w)
             mHeight = random.randint(0,h)
             pixInc = random.randint(2,7)
-            Missile.add_missile(canvas,missiles,x,mHeight,pixInc,color)
+            Missile.add_missile(canvas,missiles,mHeight,x,pixInc,color)
 
 
             for m in missiles:
                 m.next()
+                
 
 
 

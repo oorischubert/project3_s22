@@ -48,6 +48,9 @@ class Explosion:
                 
    
     def add_explosion(canvas,booms,x,y,color,radius):
+      for b in booms:
+            if b.is_active() != True:
+                booms.pop(booms.index(b))
       newExp = Explosion(canvas,color,radius)
       newExp.activate(x,y)
       newExp.next
@@ -98,8 +101,6 @@ def main():
                 
             # check active status of list of booms (for debugging)
             for b in booms:
-                if b.is_active() == False:
-                    booms.pop(booms.index(b))
                 print(b.is_active(),end=" ")
             print()
 

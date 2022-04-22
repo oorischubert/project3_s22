@@ -8,6 +8,7 @@ from Missile import Missile
 def main(): 
        
         ##### create a window, canvas 
+        colors = ["red", "green", "blue", "yellow", "orange", "purple"]
         root = Tk() # instantiate a tkinter window
         
         my_image=PhotoImage(file="umass_campus.png")
@@ -30,7 +31,23 @@ def main():
         ############################################
         ####### start simulation
         ############################################
-      
+        t=0  
+        while True:
+            time.sleep(0.5)
+            color = random.choice(colors)
+            x = random.randint(0,w)
+            mHeight = random.randint(0,h)
+            pixInc = random.randint(2,7)
+            Missile.add_missile(canvas,missiles,mHeight,x,pixInc,color)
+
+
+            for m in missiles:
+                m.next()
+                if m.is_active() == False:
+                   Explosion.add_explosion(canvas,booms,canvas.coords(m.missile)[0],canvas.coords(m.missile)[1],'rainbow',80)
+                
+            for b in booms:
+                b.next()
 
 
 
@@ -38,7 +55,9 @@ def main():
 
 
         ### To complete
-
+            root.update()   # update the graphic (redraw)
+            time.sleep(0.01)  # wait 0.01 second  
+            t=t+1  
 
 
 
