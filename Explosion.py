@@ -6,28 +6,27 @@ from Dot import Dot
 class Explosion:
     dotList = []
     #### to complete
-    def __init__(self,canvas,booms,x,y):
-        self.tag="explosion"
+    def __init__(self,canvas,color='rainbow',maxRad=80):
+        self.color = color
         self.canvas = canvas
-        self.booms=booms
-        self.x = x
-        self.y = y
-        self.maxRad = 80
-        self.currentRad = 0
+        self.maxRad = maxRad
         self.dots = 15
         self.__active = False
         self.dotList = []
-        self.activate()
-        
-      
-        
+
+    #def get_id(dot):
+    #   return str(dot)
     
-    def activate(self):
+    def activate(self,x,y):
+        self.x = x
+        self.y = y
+        self.currentRad = 0
         self.__active = True
 
     def deactivate(self):
       for dot in self.dotList:
-       self.canvas.delete(dot)
+       self.canvas.delete(str(dot))
+       #print(str(dot))
       self.__active = False
       print('deactivated')
 
@@ -39,9 +38,9 @@ class Explosion:
            if self.is_active() == True:
             for ring in range(15):
               deg = random.randint(1,360)
-              __x = math.cos(deg)*self.currentRad
-              __y = math.sin(deg)*self.currentRad
-              dot = Dot(self.canvas,__x+self.x,__y+self.y,"rainbow",True)
+              __x = math.cos(deg*math.pi/180)*self.currentRad
+              __y = math.sin(deg*math.pi/180)*self.currentRad
+              dot = Dot(self.canvas,__x+self.x,__y+self.y,self.color,True)
               self.dotList.append(dot)
             if self.currentRad >= self.maxRad:
                 self.deactivate()
@@ -49,7 +48,9 @@ class Explosion:
                 
    
     def add_explosion(canvas,booms,x,y,color,radius):
-      newExp = Explosion(canvas,booms,x,y)
+      newExp = Explosion(canvas,color,radius)
+      newExp.activate(x,y)
+      newExp.next
       booms.append(newExp)
       
 
