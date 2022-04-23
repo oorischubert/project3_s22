@@ -13,9 +13,6 @@ class Explosion:
         self.dots = 15
         self.__active = False
         self.dotList = []
-
-    #def get_id(dot):
-    #   return str(dot)
     
     def activate(self,x,y):
         self.x = x
@@ -24,9 +21,8 @@ class Explosion:
         self.__active = True
 
     def deactivate(self):
-      for dot in self.dotList:
-       self.canvas.delete(str(dot))
-       #print(str(dot))
+      self.canvas.delete(str(self)[19:30])
+      print(self)
       self.__active = False
       print('deactivated')
 
