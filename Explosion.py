@@ -21,7 +21,8 @@ class Explosion:
         self.__active = True
 
     def deactivate(self):
-      self.canvas.delete(str(self)[19:30])
+      for dot in self.dotList:
+       self.canvas.delete(dot.dots)
       print(self)
       self.__active = False
       print('deactivated')
@@ -49,7 +50,6 @@ class Explosion:
                 booms.pop(booms.index(b))
       newExp = Explosion(canvas,color,radius)
       newExp.activate(x,y)
-      newExp.next
       booms.append(newExp)
       
 

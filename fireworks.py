@@ -33,18 +33,21 @@ def main():
         ############################################
         t=0  
         while True:
-            time.sleep(0.5)
-            color = random.choice(colors)
-            x = random.randint(0,w)
-            mHeight = random.randint(0,h)
-            pixInc = random.randint(2,7)
-            Missile.add_missile(canvas,missiles,mHeight,x,pixInc,color)
+            if t%50 == 0 :
+                color = random.choice(colors)
+                x = random.randint(0,w)
+                mHeight = random.randint(0,h)
+                pixInc = random.randint(2,7)
+                Missile.add_missile(canvas,missiles,mHeight,x,pixInc,color)
 
 
             for m in missiles:
+                
                 m.next()
                 if m.is_active() == False:
                    Explosion.add_explosion(canvas,booms,canvas.coords(m.missile)[0],canvas.coords(m.missile)[1],'rainbow',80)
+                   canvas.delete(m.missile)
+                   missiles.pop(missiles.index(m))
                 
             for b in booms:
                 b.next()

@@ -19,9 +19,8 @@ class Missile:
         self.__active = True
     
     def deactivate(self):
-        #need to delete!
-        self.canvas.delete(str(self)[19:30])
-        print(self)
+        #self.canvas.delete(self.missile)
+        #print(self)
         self.__active = False
     
     def is_active(self):
