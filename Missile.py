@@ -8,14 +8,14 @@ class Missile:
         self.cHeight = cHeight
         self.pixelInc = pixelInc
         self.color = color
-        self.width = 8
-        self.mHeight = 2.5
+        self.mHeight = 25
+        self.mWidth = 8
         self.__active = False
 
     def activate(self,y,x):
         self.x = x
         self.y = y
-        self.missile=self.canvas.create_rectangle(x,800,x+2.5,800-self.width,outline=self.color,fill=self.color)
+        self.missile=self.canvas.create_rectangle(x,800,x+self.mWidth,800-self.mHeight,outline=self.color,fill=self.color)
         self.__active = True
     
     def deactivate(self):

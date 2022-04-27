@@ -23,9 +23,7 @@ class Explosion:
     def deactivate(self):
       for dot in self.dotList:
        self.canvas.delete(dot.dots)
-      print(self)
       self.__active = False
-      print('deactivated')
 
     def is_active(self):
       return self.__active
@@ -34,7 +32,7 @@ class Explosion:
            self.currentRad = self.currentRad + 1
            if self.is_active() == True:
             for ring in range(15):
-              deg = random.randint(1,360)
+              deg = random.randint(0,359)
               __x = math.cos(deg*math.pi/180)*self.currentRad
               __y = math.sin(deg*math.pi/180)*self.currentRad
               dot = Dot(self.canvas,__x+self.x,__y+self.y,self.color,True)
