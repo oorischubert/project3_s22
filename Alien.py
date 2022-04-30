@@ -12,26 +12,30 @@ class Alien:
         self.IPV=IPV
         self._active = False
         self.aLoc = 0 #alien location on y axis
-        self.rect = self.canvas.create_rectangle(self.x,self.y,self.x+self.aWidth,self.y+self.aHeight,outline=self.color,fill=self.color)
+
     
     def activate(self):
-        self.x=random.randint(0,self.canvas.winfo_width())
+        self.x=random.randint(0,self.canvas.winfo_width()-self.aWidth)
         self.y=0
+        self.rect = self.canvas.create_rectangle(self.x,self.y,self.x+self.aWidth,self.y+self.aHeight,outline=self.color,fill=self.color)
         self._active = True
     
     def deactivate(self):
         self.canvas.delete(self.rect) #necessary?
         self._active=False
+
+    def is_active(self):
+        return self._active
     
     def next(self):
         self.aLoc = self.aLoc + self.pixInc
         if self.aLoc >= self.canvas.winfo_height():
             self.deactivate()
-        if self._active() == True:
+        if self._active == True:
             self.canvas.move(self.rect,0,self.pixInc)
 
     def is_shot(self,x0,y0):
-        if (self.x <= x0 <= self.x+self.aWidth) and (self.y <= y0 <= self.y+self.aHeight):
+        if (self.canvas.coords(self.rect)[0] <= x0 <= self.canvas.coords(self.rect)[0]+self.aWidth) and (self.canvas.coords(self.rect)[1] <= y0 <= self.canvas.coords(self.rect)[1]+self.aHeight):
             return True
         else:
             return False
@@ -54,7 +58,7 @@ class Alien_red(Alien):
 ###############################################################
 ###############################################################
 
-class Alien_green(Alien_red):
+#class Alien_green(Alien_red):
 
     # to complete
 
@@ -64,7 +68,8 @@ class Alien_green(Alien_red):
                 
 
 
-class Alien_blue(Alien_red):
+#class Alien_blue(Alien_red):
+    
 
 
     # to complete

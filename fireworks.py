@@ -45,7 +45,7 @@ def main():
                 
                 m.next()
                 if m.is_active() == False:
-                   Explosion.add_explosion(canvas,booms,canvas.coords(m.missile)[0],canvas.coords(m.missile)[1],'rainbow',80)
+                   Explosion.add_explosion(canvas,booms,canvas.coords(m.missile)[0]+4,canvas.coords(m.missile)[1]+12.5,'rainbow',80)
                    canvas.delete(m.missile)
                    missiles.pop(missiles.index(m))
                 
