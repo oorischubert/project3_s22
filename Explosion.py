@@ -33,8 +33,8 @@ class Explosion:
            if self.is_active() == True:
             for ring in range(15):
               deg = random.randint(0,359)
-              __x = math.cos(deg*math.pi/180)*self.currentRad
-              __y = math.sin(deg*math.pi/180)*self.currentRad
+              __x = math.cos(deg)*self.currentRad
+              __y = math.sin(deg)*self.currentRad
               dot = Dot(self.canvas,__x+self.x,__y+self.y,self.color,True)
               self.dotList.append(dot)
             if self.currentRad >= self.maxRad:

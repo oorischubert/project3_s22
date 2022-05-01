@@ -53,6 +53,7 @@ class Alien_red(Alien):
         self.canvas=canvas
         self.aWidth=self.width
         self.aHeight=self.height
+        self.color = 'red'
     
     def activate(self):
         self.x=random.randint(0+self.width/2,self.canvas.winfo_width()-self.width/2)
@@ -70,6 +71,7 @@ class Alien_green(Alien_red):
         super().__init__(self)
         self.canvas=canvas
         self.image=PhotoImage(file="alien_green.png")
+        self.color = 'green'
     
 
    def next(self):
@@ -93,11 +95,25 @@ class Alien_green(Alien_red):
                 
 
 
-#class Alien_blue(Alien_red):
-    
+class Alien_blue(Alien_red):
+    def __init__(self,canvas):
+        Alien.__init__(self,canvas)
+        super().__init__(self)
+        self.canvas=canvas
+        self.image=PhotoImage(file="alien_blue.png")
+        self.color = 'blue'
+        self.angle=random.randint(-160,-20)
+        self.bouncer=1
 
 
-    # to complete
+    def next(self):
+        self.aLoc = self.aLoc + self.pixInc
+        if self.aLoc >= self.canvas.winfo_height():
+            self.deactivate()
+        if self._active == True:
+            if self.canvas.coords(self.rect)[0] <= 0 + self.width/2 or self.canvas.coords(self.rect)[0] >= self.canvas.winfo_width() - self.width/2:
+              self.bouncer = self.bouncer*-1
+            self.canvas.move(self.rect,self.bouncer*self.pixInc*math.sin(self.angle),self.pixInc)
 
 
 
@@ -131,8 +147,8 @@ def main():
         #Initialize alien
         #alien=Alien(canvas)
         #alien=Alien_red(canvas)
-        alien=Alien_green(canvas)
-        #alien=Alien_blue(canvas)
+        #alien=Alien_green(canvas)
+        alien=Alien_blue(canvas)
 
         alien.activate()
         
