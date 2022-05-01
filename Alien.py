@@ -21,8 +21,8 @@ class Alien:
         self._active = True
     
     def deactivate(self):
-        self.canvas.delete(self.rect) #necessary?
         self._active=False
+        self.canvas.delete(self.rect) #necessary?
 
     def is_active(self):
         return self._active
@@ -35,7 +35,7 @@ class Alien:
             self.canvas.move(self.rect,0,self.pixInc)
 
     def is_shot(self,x0,y0):
-        if (self.canvas.coords(self.rect)[0] <= x0 <= self.canvas.coords(self.rect)[0]+self.aWidth) and (self.canvas.coords(self.rect)[1] <= y0 <= self.canvas.coords(self.rect)[1]+self.aHeight):
+        if (self.canvas.coords(self.rect)[0]-self.aWidth/2 <= x0 <= self.canvas.coords(self.rect)[0]+self.aWidth/2) and (self.canvas.coords(self.rect)[1]-self.aHeight/2 <= y0 <= self.canvas.coords(self.rect)[1]+self.aHeight/2):
             return True
         else:
             return False
@@ -44,21 +44,46 @@ class Alien:
 ################################################################
 
 class Alien_red(Alien):
-    def __init__(self,c):
-        super().__init__() #init parent class!
+    def __init__(self,canvas):
+        super().__init__(canvas) #init parent class!
         self.image=PhotoImage(file="alien_red.png")  # keep a reference (avoid garbage collector)
-        width=self.image.width()
-        height=self.image.height()
-        # constructor to complete
-
-    # to complete
-        
+        self.width=self.image.width()
+        self.height=self.image.height()
+        self.IPV=2
+        self.canvas=canvas
+        self.aWidth=self.width
+        self.aHeight=self.height
+    
+    def activate(self):
+        self.x=random.randint(0+self.width/2,self.canvas.winfo_width()-self.width/2)
+        self.y=0
+        self.rect=self.canvas.create_image(self.x,self.y,anchor=CENTER,image=self.image)
+        self._active = True
 
 
 ###############################################################
 ###############################################################
 
-#class Alien_green(Alien_red):
+class Alien_green(Alien_red):
+   def __init__(self,canvas):
+        Alien.__init__(self,canvas)
+        super().__init__(self)
+        self.canvas=canvas
+        self.image=PhotoImage(file="alien_green.png")
+    
+
+   def next(self):
+      self.aLoc = self.aLoc + self.pixInc
+      if self.aLoc >= self.canvas.winfo_height():
+            self.deactivate()
+      if self._active == True:
+            wiggle=random.randint(-5,5)
+            if self.canvas.coords(self.rect)[0] + wiggle <= 0 + self.width/2 or self.canvas.coords(self.rect)[0] + wiggle >= self.canvas.winfo_width() - self.width/2:
+             wiggle=0
+            self.canvas.move(self.rect,wiggle,self.pixInc)
+
+
+
 
     # to complete
 
@@ -104,9 +129,9 @@ def main():
         
 
         #Initialize alien
-        alien=Alien(canvas)
+        #alien=Alien(canvas)
         #alien=Alien_red(canvas)
-        #alien=Alien_green(canvas)
+        alien=Alien_green(canvas)
         #alien=Alien_blue(canvas)
 
         alien.activate()
