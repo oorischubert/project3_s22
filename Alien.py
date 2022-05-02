@@ -15,10 +15,11 @@ class Alien:
 
     
     def activate(self):
+        self.aLoc = 0
+        self._active = True
         self.x=random.randint(0,self.canvas.winfo_width()-self.aWidth)
         self.y=0
         self.rect = self.canvas.create_rectangle(self.x,self.y,self.x+self.aWidth,self.y+self.aHeight,outline=self.color,fill=self.color)
-        self._active = True
     
     def deactivate(self):
         self._active=False
@@ -29,7 +30,7 @@ class Alien:
     
     def next(self):
         self.aLoc = self.aLoc + self.pixInc
-        if self.aLoc >= self.canvas.winfo_height():
+        if self.aLoc >= self.canvas.winfo_height() + self.aHeight/2:
             self.deactivate()
         if self._active == True:
             self.canvas.move(self.rect,0,self.pixInc)
@@ -56,6 +57,7 @@ class Alien_red(Alien):
         self.color = 'red'
     
     def activate(self):
+        self.aLoc = 0
         self.x=random.randint(0+self.width/2,self.canvas.winfo_width()-self.width/2)
         self.y=0
         self.rect=self.canvas.create_image(self.x,self.y,anchor=CENTER,image=self.image)
@@ -76,7 +78,7 @@ class Alien_green(Alien_red):
 
    def next(self):
       self.aLoc = self.aLoc + self.pixInc
-      if self.aLoc >= self.canvas.winfo_height():
+      if self.aLoc >= self.canvas.winfo_height() + self.aHeight/2:
             self.deactivate()
       if self._active == True:
             wiggle=random.randint(-5,5)
@@ -108,7 +110,7 @@ class Alien_blue(Alien_red):
 
     def next(self):
         self.aLoc = self.aLoc + self.pixInc
-        if self.aLoc >= self.canvas.winfo_height():
+        if self.aLoc >= self.canvas.winfo_height() + self.aHeight/2:
             self.deactivate()
         if self._active == True:
             if self.canvas.coords(self.rect)[0] <= 0 + self.width/2 or self.canvas.coords(self.rect)[0] >= self.canvas.winfo_width() - self.width/2:
