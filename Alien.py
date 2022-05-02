@@ -29,7 +29,7 @@ class Alien:
         return self._active
     
     def next(self):
-        self.aLoc = self.aLoc + self.pixInc
+        self.aLoc += self.pixInc
         if self.aLoc >= self.canvas.winfo_height() + self.aHeight/2:
             self.deactivate()
         if self._active == True:
@@ -40,6 +40,14 @@ class Alien:
             return True
         else:
             return False
+    def add_alien(canvas,aliens):
+      alien = random.choice([Alien_red(canvas),Alien_green(canvas),Alien_blue(canvas)])
+      for a in aliens:
+            if a.is_active() != True:
+                aliens.pop(aliens.index(a))
+      alien.activate()
+      alien.next()
+      aliens.append(alien)
         
 ################################################################
 ################################################################
@@ -62,8 +70,6 @@ class Alien_red(Alien):
         self.y=0
         self.rect=self.canvas.create_image(self.x,self.y,anchor=CENTER,image=self.image)
         self._active = True
-
-
 ###############################################################
 ###############################################################
 
@@ -77,7 +83,7 @@ class Alien_green(Alien_red):
     
 
    def next(self):
-      self.aLoc = self.aLoc + self.pixInc
+      self.aLoc += self.pixInc
       if self.aLoc >= self.canvas.winfo_height() + self.aHeight/2:
             self.deactivate()
       if self._active == True:
@@ -109,7 +115,7 @@ class Alien_blue(Alien_red):
 
 
     def next(self):
-        self.aLoc = self.aLoc + self.pixInc
+        self.aLoc += self.pixInc
         if self.aLoc >= self.canvas.winfo_height() + self.aHeight/2:
             self.deactivate()
         if self._active == True:

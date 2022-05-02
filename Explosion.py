@@ -29,7 +29,7 @@ class Explosion:
       return self.__active
     
     def next(self):
-           self.currentRad = self.currentRad + 1
+           self.currentRad += 1
            if self.is_active() == True:
             for ring in range(15):
               deg = random.randint(0,359)
