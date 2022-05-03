@@ -15,16 +15,22 @@ def stop_game():
     game_over=True
     
 def shoot(canvas,aliens,booms,ammunition,x,y):
+  result='miss'
+  shot = False
+  if game_over != True:
     for a in aliens:
-     if a.is_shot(x,y) and a.is_active():
+     if a.is_shot(x,y):
         result="hit!"
         ammunition.increment(a.IPV)
         a.deactivate()
-        booms.append(Explosion.add_explosion(canvas,booms,x,y,a.color,30))
-    else:
+        Explosion.add_explosion(canvas,booms,x,y,a.color,30)
+        shot = True
+        #print(len(aliens))
+    if shot == False:
         result="miss!"
         ammunition.increment(-3)
-        booms.append(Explosion.add_explosion(canvas,booms,x,y,'white',30))
+        Explosion.add_explosion(canvas,booms,x,y,'white',30)
+        #print(len(aliens))
     print(x,y,result)
     ####### to complete
 
@@ -67,14 +73,26 @@ def main():
 
         t=0  
         while True:
-            if t%10 == 0 :
-                Alien.add_alien(canvas,aliens)
+
+            if t%10 == 0:
+                Alien_red.add_alien(canvas,aliens)
 
             for alien in aliens:
-                alien.next()
+                if alien.is_active:
+                  alien.next()
+                
 
             for boom in booms:
+              if boom.is_active:
                  boom.next()
+
+            if ammunition.count <= 0:
+                stop_game()
+            
+            if game_over == True:
+                ammunition.increment('reset')
+                canvas.create_text(canvas.winfo_width()/2,canvas.winfo_height()/2,text='GAME OVER',fill='orange',font=('courier',50))
+                break
 
         ### To complete
             root.update()   # update the graphic (redraw)

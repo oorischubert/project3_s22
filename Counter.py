@@ -7,8 +7,11 @@ class Counter:
       self.counter = canvas.create_text(self.canvas.winfo_width()-70,20,text=self.count,fill='orange',font=('courier',25))
 
   def increment(self,inc):
-       self.count = self.count + inc
-       self.canvas.itemconfig(self.counter, text=self.count)
+       if inc == 'reset':
+           self.canvas.itemconfig(self.counter, text=0)
+       else:
+        self.count += inc
+        self.canvas.itemconfig(self.counter, text=self.count)
        
 #########################
 

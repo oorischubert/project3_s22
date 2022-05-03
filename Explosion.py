@@ -42,15 +42,29 @@ class Explosion:
                
                 
    
-    def add_explosion(canvas,booms,x,y,color,radius):
-      for b in booms:
-            if b.is_active() != True:
-                booms.pop(booms.index(b))
+    def add_explosion2(canvas,booms,x,y,color='rainbow',radius=80):
+      for b in range(len(booms)):
+            if booms[b-1].is_active() != True:
+                booms.pop(b)
       newExp = Explosion(canvas,color,radius)
+      print(len(booms))
       newExp.activate(x,y)
       booms.append(newExp)
-      
 
+    def add_explosion(canvas,booms,x,y,radius = 80, color="rainbow"):
+        boom = Explosion(canvas, radius, color)
+        boom.activate(x, y)
+        i = 0
+        while True:
+            l = len(booms)
+            if l == 0 or l == i: break
+            if (not booms[i].is_active()):
+                booms.pop(i)
+            else:
+                i += 1
+        booms.append(boom)
+      
+      
 
 
 

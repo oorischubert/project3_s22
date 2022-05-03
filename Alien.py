@@ -24,7 +24,7 @@ class Alien:
     def deactivate(self):
         self._active=False
         self.canvas.delete(self.rect) #necessary?
-
+    
     def is_active(self):
         return self._active
     
@@ -34,20 +34,7 @@ class Alien:
             self.deactivate()
         if self._active == True:
             self.canvas.move(self.rect,0,self.pixInc)
-
-    def is_shot(self,x0,y0):
-        if (self.canvas.coords(self.rect)[0]-self.aWidth/2 <= x0 <= self.canvas.coords(self.rect)[0]+self.aWidth/2) and (self.canvas.coords(self.rect)[1]-self.aHeight/2 <= y0 <= self.canvas.coords(self.rect)[1]+self.aHeight/2):
-            return True
-        else:
-            return False
-    def add_alien(canvas,aliens):
-      alien = random.choice([Alien_red(canvas),Alien_green(canvas),Alien_blue(canvas)])
-      for a in aliens:
-            if a.is_active() != True:
-                aliens.pop(aliens.index(a))
-      alien.activate()
-      alien.next()
-      aliens.append(alien)
+     
         
 ################################################################
 ################################################################
@@ -70,6 +57,25 @@ class Alien_red(Alien):
         self.y=0
         self.rect=self.canvas.create_image(self.x,self.y,anchor=CENTER,image=self.image)
         self._active = True
+
+    def is_shot(self,x0,y0):
+        if (self.canvas.coords(self.rect)[0]-self.aWidth/2 <= x0 <= self.canvas.coords(self.rect)[0]+self.aWidth/2) and (self.canvas.coords(self.rect)[1]-self.aHeight/2 <= y0 <= self.canvas.coords(self.rect)[1]+self.aHeight/2):
+            return True
+        else:
+            return False
+
+    def add_alien(canvas,aliens):
+      alien = random.choice([Alien_red(canvas),Alien_green(canvas),Alien_blue(canvas)])
+      alien.activate()
+      i = 0
+      while True:
+            l = len(aliens)
+            if l == 0 or l == i: break
+            if (not aliens[i].is_active()):
+                aliens.pop(i)
+            else:
+                i += 1
+      aliens.append(alien)
 ###############################################################
 ###############################################################
 
@@ -80,6 +86,7 @@ class Alien_green(Alien_red):
         self.canvas=canvas
         self.image=PhotoImage(file="alien_green.png")
         self.color = 'green'
+        self.IPV = 4
     
 
    def next(self):
@@ -112,6 +119,7 @@ class Alien_blue(Alien_red):
         self.color = 'blue'
         self.angle=random.randint(-160,-20)
         self.bouncer=1
+        self.IPV = 3
 
 
     def next(self):
