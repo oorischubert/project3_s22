@@ -3,42 +3,48 @@ from tkinter import *
 import time,random
 
 class Missile:
-    def __init__(self,canvas,cHeight=0,pixelInc=5,color='orange'):
+    def __init__(self,canvas,cHeight=0,pixelInc=5,color='orange',mWidth=8,mHeight=25):
         self.canvas = canvas
         self.cHeight = cHeight
         self.pixelInc = pixelInc
         self.color = color
-        self.mHeight = 25
-        self.mWidth = 8
+        self.mHeight = mHeight
+        self.mWidth = mWidth
         self.__active = False
 
-    def activate(self,y,x):
+    def activate(self,x,y):
         self.x = x
         self.y = y
-        self.missile=self.canvas.create_rectangle(x,800,x+self.mWidth,800-self.mHeight,outline=self.color,fill=self.color)
+        self.mLoc = self.canvas.winfo_height()-self.mHeight-self.y
+        self.missile=self.canvas.create_rectangle(x,self.canvas.winfo_height()-self.y,x+self.mWidth,self.canvas.winfo_height()-self.y-self.mHeight,outline=self.color,fill=self.color)
         self.__active = True
     
     def deactivate(self):
-        #self.canvas.delete(self.missile)
-        #print(self)
         self.__active = False
+        self.canvas.delete(self.missile)
     
     def is_active(self):
         return self.__active
     
     def next(self):
-        self.mHeight = self.mHeight + self.pixelInc
-        if self.mHeight >= self.cHeight:
+        self.mLoc -= self.pixelInc
+        if self.mLoc <= self.cHeight:
             self.deactivate()
         if self.is_active() == True:
             self.canvas.move(self.missile,0,-self.pixelInc)
     
-    def add_missile(canvas,missiles,x,cMax=0,pInc=5,color='orange'):
-      for m in missiles:
-            if m.is_active() != True:
-                missiles.pop(missiles.index(m))
+    def add_missile(canvas,missiles,x,y,cMax=0,pInc=5,color='orange',stop = False):
+     if stop == False:
       newMissile = Missile(canvas,cMax,pInc,color)
-      newMissile.activate(cMax,x)
+      i = 0
+      while True:
+            l = len(missiles)
+            if l == 0 or l == i: break
+            if (not missiles[i].is_active()):
+                missiles.pop(i)
+            else:
+                i += 1
+      newMissile.activate(x,y)
       newMissile.next()
       missiles.append(newMissile)
 
@@ -74,9 +80,9 @@ def main():
             time.sleep(0.5)
             color = random.choice(colors)
             x = random.randint(0,w)
-            mHeight = random.randint(0,h)
+            cHeight = random.randint(0,h)
             pixInc = random.randint(2,7)
-            Missile.add_missile(canvas,missiles,mHeight,x,pixInc,color)
+            Missile.add_missile(canvas,missiles,x,25,cHeight,pixInc,color)
 
 
             for m in missiles:

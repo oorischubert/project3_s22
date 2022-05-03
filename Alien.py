@@ -59,7 +59,8 @@ class Alien_red(Alien):
         self._active = True
 
     def is_shot(self,x0,y0):
-        if (self.canvas.coords(self.rect)[0]-self.aWidth/2 <= x0 <= self.canvas.coords(self.rect)[0]+self.aWidth/2) and (self.canvas.coords(self.rect)[1]-self.aHeight/2 <= y0 <= self.canvas.coords(self.rect)[1]+self.aHeight/2):
+        _coords = self.canvas.coords(self.rect)
+        if (_coords[0]-self.width/2<= x0 <= _coords[0]+self.width/2) and (_coords[1]-self.height/2 <= y0 <= _coords[1]+self.height/2):
             return True
         else:
             return False
@@ -95,7 +96,8 @@ class Alien_green(Alien_red):
             self.deactivate()
       if self._active == True:
             wiggle=random.randint(-5,5)
-            if self.canvas.coords(self.rect)[0] + wiggle <= 0 + self.width/2 or self.canvas.coords(self.rect)[0] + wiggle >= self.canvas.winfo_width() - self.width/2:
+            _coords = self.canvas.coords(self.rect)
+            if _coords[0] + wiggle <= 0 + self.width/2 or _coords[0] + wiggle >= self.canvas.winfo_width() - self.width/2:
              wiggle=0
             self.canvas.move(self.rect,wiggle,self.pixInc)
 
@@ -127,7 +129,8 @@ class Alien_blue(Alien_red):
         if self.aLoc >= self.canvas.winfo_height() + self.aHeight/2:
             self.deactivate()
         if self._active == True:
-            if self.canvas.coords(self.rect)[0] <= 0 + self.width/2 or self.canvas.coords(self.rect)[0] >= self.canvas.winfo_width() - self.width/2:
+            _coords = self.canvas.coords(self.rect)
+            if _coords[0] <= 0 + self.width/2 or _coords[0] >= self.canvas.winfo_width() - self.width/2:
               self.bouncer = self.bouncer*-1
             self.canvas.move(self.rect,self.bouncer*self.pixInc*math.sin(self.angle),self.pixInc)
 

@@ -18,20 +18,21 @@ def shoot(canvas,aliens,booms,ammunition,x,y):
   result='miss'
   shot = False
   if game_over != True:
-    for a in aliens:
+   for a in aliens:
+    if a.is_active():
      if a.is_shot(x,y):
         result="hit!"
         ammunition.increment(a.IPV)
         a.deactivate()
         Explosion.add_explosion(canvas,booms,x,y,a.color,30)
         shot = True
-        #print(len(aliens))
-    if shot == False:
+        a.deactivate()
+        aliens.pop(aliens.index(a))
+   if shot == False:
         result="miss!"
         ammunition.increment(-3)
         Explosion.add_explosion(canvas,booms,x,y,'white',30)
-        #print(len(aliens))
-    print(x,y,result)
+   print(x,y,result)
     ####### to complete
 
 
@@ -74,12 +75,15 @@ def main():
         t=0  
         while True:
 
-            if t%10 == 0:
+            if t%5 == 0:
                 Alien_red.add_alien(canvas,aliens)
 
             for alien in aliens:
                 if alien.is_active:
                   alien.next()
+                else:
+                   alien.deactivate()
+                   alien.pop(aliens.index(alien))
                 
 
             for boom in booms:
