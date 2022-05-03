@@ -1,7 +1,7 @@
 ########################
 ## Team Members
-## Name1:         
-## Name2:
+## Name1: Oori Schubert        
+## Name2: Daniel Lis
 #########################
 
 from tkinter import *

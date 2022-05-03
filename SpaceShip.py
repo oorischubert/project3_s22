@@ -1,9 +1,29 @@
 from tkinter import *
 
 class SpaceShip:
+    def __init__(self,canvas):
+     self.canvas=canvas
+     self._active = False
+     self.image=PhotoImage(file="ship.png")
+     self.initX=self.canvas.winfo_width()/2
 
+    def activate(self):
+         self.ship=self.canvas.create_image(self.initX,self.canvas.winfo_height()-40,anchor=CENTER,image=self.image)
+         self._active = True
+    
+    def deactivate(self):
+        self._active = False
+        self.canvas.delete(self.ship)
 
- 
+    def is_active(self):
+        return self._active
+    
+    def shift_left(self):
+     if self.canvas.coords(self.ship)[0] > 15 + self.image.width()/2 and self._active:
+      self.canvas.move(self.ship,-15,0)
+    def shift_right(self):
+     if self.canvas.coords(self.ship)[0] < self.canvas.winfo_width() - 15 - self.image.width()/2 and self._active:
+      self.canvas.move(self.ship,15,0)
 
     
 def main():
