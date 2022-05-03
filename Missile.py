@@ -33,8 +33,8 @@ class Missile:
         if self.is_active() == True:
             self.canvas.move(self.missile,0,-self.pixelInc)
     
-    def add_missile(canvas,missiles,x,y,cMax=0,pInc=5,color='orange',stop = False):
-     if stop == False:
+    def add_missile(canvas,missiles,x,y,cMax=0,pInc=5,color='orange',stop = True):
+     if stop == True:
       newMissile = Missile(canvas,cMax,pInc,color)
       i = 0
       while True:

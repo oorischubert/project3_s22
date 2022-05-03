@@ -5,7 +5,6 @@ import numpy as np
 
 
 class Explosion:
-    dotList = []
     #### to complete
     def __init__(self,canvas,color='rainbow',maxRad=80):
         self.color = color

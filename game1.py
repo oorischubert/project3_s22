@@ -95,6 +95,8 @@ def main():
             
             if game_over == True:
                 ammunition.increment('reset')
+                for b in booms: #clean screen of explosions
+                   b.deactivate()
                 canvas.create_text(canvas.winfo_width()/2,canvas.winfo_height()/2,text='GAME OVER',fill='orange',font=('courier',50))
                 break
 

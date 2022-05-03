@@ -12,10 +12,14 @@ from Missile import Missile
 game_over=False
 
 ######### Function
-def stop_game(canvas,counter):
+def stop_game(canvas,ship,missiles,booms):
     global game_over
     game_over=True
-    counter.increment('reset')
+    for m in missiles:
+        m.deactivate()
+    for b in booms:
+        b.deactivate()
+    ship.deactivate()
     canvas.create_text(canvas.winfo_width()/2,canvas.winfo_height()/2,text='GAME OVER',fill='orange',font=('courier',50))
 
 def shoot(canvas,color,aliens,booms,counter,xStart,xEnd,yStart,yEnd):
@@ -42,6 +46,7 @@ def main():
     ##### Dictionary
     global record 
     record = {Alien_red.id: 0, Alien_green.id: 0, Alien_blue.id: 0}
+    recordStep=[]
     ##### create a window and canvas
     root = Tk() # instantiate a tkinter window
     #my_image=PhotoImage(file="space1.png")
@@ -55,13 +60,14 @@ def main():
     aliens=[]
     missiles=[]
     booms=[]
+    shipBooms=[]
     counter = Counter(canvas,createLives=True)
     ship=SpaceShip(canvas)
     ship.activate()
     root.bind("<Left>",lambda e:ship.shift_left())
     root.bind("<Right>",lambda e:ship.shift_right())
-    root.bind("<Up>",lambda e:Missile.add_missile(canvas,missiles,ship.xLoc,ship.image.height(),0,5,'orange',stop=game_over))  
-    root.bind("<Escape>",lambda e:stop_game(canvas,counter)) 
+    root.bind("<Up>",lambda e:Missile.add_missile(canvas,missiles,ship.xLoc,ship.image.height(),0,5,'orange',ship.is_active())) 
+    root.bind("<Escape>",lambda e:stop_game(canvas,ship,missiles,booms)) 
 
     #### to complete
 
@@ -87,23 +93,37 @@ def main():
                      missiles.pop(missiles.index(m))
         
         for boom in booms:
-              if boom.is_active:
+              if boom.is_active():
                  boom.next()
 
-        if shoot(canvas,'rainbow',aliens,booms,counter,ship.xLoc-ship.image.width()/2,ship.xLoc+ship.image.width()/2,canvas.winfo_height()-ship.image.height(),canvas.winfo_height()-ship.image.height()/2):
+        for s in shipBooms:
+            if s.is_active():
+                s.next()
+            else:
+                s.deactivate()
+                shipBooms.pop(shipBooms.index(s))
+                ship.activate()
+        
+        if ship.is_active() == True:
+         if shoot(canvas,'rainbow',aliens,shipBooms,counter,ship.xLoc-ship.image.width()/2,ship.xLoc+ship.image.width()/2,canvas.winfo_height()-ship.image.height(),canvas.winfo_height()-ship.image.height()/2):
                   if len(counter.lives) >= 1:
                    counter.removeLife()
+                   ship.deactivate()
                   
-        if len(counter.lives) == 0: #cleaning up screen by explosions and missiles when game ends
-            for m in missiles:
-                m.deactivate()
-            for b in booms:
-                b.deactivate()
+                   
+                  
+        if len(counter.lives) == 0: #cleaning up screen by deleting explosions and missiles when game ends
             stop_game(canvas,counter)
             
         if game_over == True:
-                print(record)
-                break
+            for step in recordStep:
+                print(step[0],step[1],step[2])
+            break
+        
+        if t%10==0:
+          currentStep = (record[Alien_red.id],record[Alien_green.id],record[Alien_blue.id])
+          recordStep.append(currentStep)
+
 
         root.update()   # update the graphic (redraw)
         time.sleep(0.01)  # wait 0.01 second  
