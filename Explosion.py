@@ -1,6 +1,7 @@
 from tkinter import *
 import math,time,random
 from Dot import Dot
+import numpy as np
 
 
 class Explosion:
@@ -11,22 +12,22 @@ class Explosion:
         self.canvas = canvas
         self.maxRad = maxRad
         self.dots = 15
-        self.__active = False
+        self._active = False
         self.dotList = []
     
     def activate(self,x,y):
         self.x = x
         self.y = y
         self.currentRad = 0
-        self.__active = True
+        self._active = True
 
     def deactivate(self):
       for dot in self.dotList:
        self.canvas.delete(dot.dots)
-      self.__active = False
+      self._active = False
 
     def is_active(self):
-      return self.__active
+      return self._active
     
     def next(self):
            self.currentRad += 1
@@ -39,20 +40,9 @@ class Explosion:
               self.dotList.append(dot)
             if self.currentRad >= self.maxRad:
                 self.deactivate()
-               
-                
-   
-    def add_explosion2(canvas,booms,x,y,color='rainbow',radius=80):
-      for b in range(len(booms)):
-            if booms[b-1].is_active() != True:
-                booms.pop(b)
-      newExp = Explosion(canvas,color,radius)
-      print(len(booms))
-      newExp.activate(x,y)
-      booms.append(newExp)
 
     def add_explosion(canvas,booms,x,y,radius = 80, color="rainbow"):
-        boom = Explosion(canvas, radius, color)
+        boom = random.choice([Explosion(canvas, radius, color), Explosion_gravity(canvas,radius,color)])
         boom.activate(x, y)
         i = 0
         while True:
@@ -63,7 +53,40 @@ class Explosion:
             else:
                 i += 1
         booms.append(boom)
-      
+
+
+
+class Explosion_gravity(Explosion):
+    def __init__(self,canvas,color='rainbow',maxRad=80):
+     super().__init__(canvas)
+     self.theta = np.random.randint(0,359, size=(15))
+     self.speed = np.random.randint(1,6, size=(15))
+     self.maxRad=maxRad
+     self.color=color
+    
+    def next(self): #Change this!!!
+           if self.is_active() == True:
+             for i in range(len(self.theta)):
+              newX = self.speed[i] * math.cos(self.theta[i]) * self.currentRad
+              newY = self.speed[i] * math.sin(self.theta[i]) * self.currentRad  + ((.06/2)*self.currentRad**2)
+              newDot = Dot(self.canvas,newX+self.x,newY+self.y,self.color,True)
+              self.dotList.append(newDot)
+             if self.currentRad >= self.maxRad:
+                self.deactivate()
+             self.currentRad += 1
+
+    def add_explosion(canvas,booms,x,y,radius = 80, color="rainbow", pixInc = 5):
+        boom = Explosion_gravity(canvas)
+        boom.activate(x, y)
+        i = 0
+        while True:
+            l = len(booms)
+            if l == 0 or l == i: break
+            if (not booms[i].is_active()):
+                booms.pop(i)
+            else:
+                i += 1
+        booms.append(boom)
       
 
 
@@ -97,6 +120,7 @@ def main():
         
         # Tkinter binding action (mouse click)
         root.bind("<Button-1>",lambda e:Explosion.add_explosion(canvas,booms,e.x,e.y,'rainbow',80) )
+        root.bind("<Up>",lambda e:Explosion_gravity.add_explosion(canvas,booms,e.x,e.y,'rainbow',80) )
         
         ############################################
         ####### start simulation
@@ -108,9 +132,9 @@ def main():
                 boom.next()
                 
             # check active status of list of booms (for debugging)
-            for b in booms:
-                print(b.is_active(),end=" ")
-            print()
+           # for b in booms:
+                #print(b.is_active(),end=" ")
+           # print()
 
             # update the graphic and wait time
             root.update()    #redraw

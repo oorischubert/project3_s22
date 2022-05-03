@@ -40,6 +40,7 @@ class Alien:
 ################################################################
 
 class Alien_red(Alien):
+    id='red'
     def __init__(self,canvas):
         super().__init__(canvas) #init parent class!
         self.image=PhotoImage(file="alien_red.png")  # keep a reference (avoid garbage collector)
@@ -81,6 +82,7 @@ class Alien_red(Alien):
 ###############################################################
 
 class Alien_green(Alien_red):
+   id='green'
    def __init__(self,canvas):
         Alien.__init__(self,canvas)
         super().__init__(self)
@@ -113,6 +115,7 @@ class Alien_green(Alien_red):
 
 
 class Alien_blue(Alien_red):
+    id='blue'
     def __init__(self,canvas):
         Alien.__init__(self,canvas)
         super().__init__(self)

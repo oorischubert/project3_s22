@@ -18,14 +18,18 @@ def stop_game(canvas,counter):
     counter.increment('reset')
     canvas.create_text(canvas.winfo_width()/2,canvas.winfo_height()/2,text='GAME OVER',fill='orange',font=('courier',50))
 
-def shoot(canvas,aliens,booms,counter,xStart,xEnd,yStart,yEnd):
+def shoot(canvas,color,aliens,booms,counter,xStart,xEnd,yStart,yEnd):
   if game_over != True:
    shot = False
    for a in aliens:
     if a.is_active():
      if a.is_shot((xStart+xEnd)/2,yStart) or a.is_shot((xStart),yEnd) or a.is_shot((xEnd),yEnd):
         counter.increment(a.IPV)
-        Explosion.add_explosion(canvas,booms,(xStart+xEnd)/2,(yStart+yEnd)/2,a.color,30) 
+        if color == 'alien':
+            record[a.id] += 1
+            Explosion.add_explosion(canvas,booms,(xStart+xEnd)/2,(yStart+yEnd)/2,a.color,30) 
+        else:
+            Explosion.add_explosion(canvas,booms,(xStart+xEnd)/2,(yStart+yEnd)/2,'rainbow',50) 
         a.deactivate()
         aliens.pop(aliens.index(a))
         return True
@@ -35,6 +39,9 @@ def shoot(canvas,aliens,booms,counter,xStart,xEnd,yStart,yEnd):
 
     
 def main():
+    ##### Dictionary
+    global record 
+    record = {Alien_red.id: 0, Alien_green.id: 0, Alien_blue.id: 0}
     ##### create a window and canvas
     root = Tk() # instantiate a tkinter window
     #my_image=PhotoImage(file="space1.png")
@@ -75,7 +82,7 @@ def main():
                 __coords = canvas.coords(m.missile)
                 m.next()
                 if m.is_active():
-                 if shoot(canvas,aliens,booms,counter,__coords[0],__coords[0]+m.mWidth,__coords[1],__coords[1]+m.mHeight):
+                 if shoot(canvas,'alien',aliens,booms,counter,__coords[0],__coords[0]+m.mWidth,__coords[1],__coords[1]+m.mHeight):
                      m.deactivate()
                      missiles.pop(missiles.index(m))
         
@@ -83,7 +90,7 @@ def main():
               if boom.is_active:
                  boom.next()
 
-        if shoot(canvas,aliens,booms,counter,ship.xLoc-ship.image.width()/2,ship.xLoc+ship.image.width()/2,canvas.winfo_height()-ship.image.height(),canvas.winfo_height()-ship.image.height()/2):
+        if shoot(canvas,'rainbow',aliens,booms,counter,ship.xLoc-ship.image.width()/2,ship.xLoc+ship.image.width()/2,canvas.winfo_height()-ship.image.height(),canvas.winfo_height()-ship.image.height()/2):
                   if len(counter.lives) >= 1:
                    counter.removeLife()
                   
@@ -95,6 +102,7 @@ def main():
             stop_game(canvas,counter)
             
         if game_over == True:
+                print(record)
                 break
 
         root.update()   # update the graphic (redraw)
