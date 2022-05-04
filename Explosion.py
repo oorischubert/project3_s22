@@ -29,7 +29,7 @@ class Explosion:
       return self._active
     
     def next(self):
-           self.currentRad += 1
+           self.currentRad += 1                                 #increments radius size by 1
            if self.is_active() == True:
             for ring in range(15):
               deg = random.randint(0,359)
@@ -37,7 +37,7 @@ class Explosion:
               __y = math.sin(deg)*self.currentRad
               dot = Dot(self.canvas,__x+self.x,__y+self.y,self.color,True)
               self.dotList.append(dot)
-            if self.currentRad >= self.maxRad:
+            if self.currentRad >= self.maxRad:                   #deactivates explosion when explosion radius reaches 80 
                 self.deactivate()
 
     def add_explosion(canvas,booms,x,y,radius = 80, color="rainbow"):
