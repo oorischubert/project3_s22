@@ -145,9 +145,9 @@ class Alien_mine(Alien_red):
         super().__init__(self)
         self.teleTick = 0
         self.canvas=canvas
-        self.image=PhotoImage(file="ship.png")
+        self.image=PhotoImage(file="alienship.png")
         self.color='yellow'
-        self.IPV = -10
+        self.IPV = 5
 
    def next(self):
       self.aLoc += self.pixInc
