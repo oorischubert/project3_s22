@@ -18,7 +18,7 @@ class Dot:
     self.color = color
     self.finalColor = self.colorPicker()
     self.bool=bool
-    self.dots = canvas.create_oval(self.x-1,self.y-1,self.x+1,self.y+1,outline = self.finalColor, fill = self.finalColor)
+    self.dots = canvas.create_oval(self.x-1,self.y-1,self.x+1,self.y+1,outline = self.finalColor, fill = self.finalColor)    #forms dot on canvas
    
 #if inputted color is rainbow return random color from colors list else return what was inputed
   def colorPicker(self):
