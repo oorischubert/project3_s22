@@ -2,14 +2,15 @@ import numpy as np
 import matplotlib.pyplot as mat
 #used for text saving
 color=['^r-','^g-','^b-','^y-']
-fileName = 'game1.txt'
+fileName = 'game2.txt'
 file=open(fileName,"r")
 contents = file.read().split("\n")
 lineList=[]
 
 for line in contents:
-  list = line.split()
-  lineList.append(list)
+  if line != '':
+   list = line.split()
+   lineList.append(list)
 for row in range(len(lineList[0])):
     columnList=[]
     timeList=[]
