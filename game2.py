@@ -110,17 +110,19 @@ def main():
                    counter.removeLife()
                    ship.deactivate()
                   
-                   
-                  
         if len(counter.lives) == 0: #cleaning up screen by deleting explosions and missiles when game ends
-            stop_game(canvas,counter)
-            
+            stop_game(canvas,counter)   
+
         if game_over == True:
+            file=open("game2.txt","w")
             for step in recordStep:
-                print(step[0],step[1],step[2])
+                file.write(str(step[0])+" "+str(step[1])+" "+str(step[2])+"\n")
+            file.close()
+            file=open("game2.txt","r")
+            print(file.read())
             break
         
-        if t%10==0:
+        if t%100==0:
           currentStep = (record[Alien_red.id],record[Alien_green.id],record[Alien_blue.id])
           recordStep.append(currentStep)
 

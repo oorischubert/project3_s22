@@ -107,6 +107,11 @@ class Alien_green(Alien_red):
 
 
     # to complete
+class Alien_mod(Alien_red):
+   id='yellow'
+   def __init__(self,canvas):
+        Alien.__init__(self,canvas)
+
 
 
 ###############################################################
