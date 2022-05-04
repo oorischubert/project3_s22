@@ -67,7 +67,7 @@ class Alien_red(Alien):
             return False
 
     def add_alien(canvas,aliens):
-      alien = random.choice([Alien_red(canvas),Alien_green(canvas),Alien_blue(canvas)])
+      alien = random.choice([Alien_red(canvas),Alien_green(canvas),Alien_blue(canvas),Alien_mine(canvas)])
       alien.activate()
       i = 0
       while True:
@@ -107,10 +107,6 @@ class Alien_green(Alien_red):
 
 
     # to complete
-class Alien_mod(Alien_red):
-   id='yellow'
-   def __init__(self,canvas):
-        Alien.__init__(self,canvas)
 
 
 
@@ -142,9 +138,33 @@ class Alien_blue(Alien_red):
               self.bouncer = self.bouncer*-1
             self.canvas.move(self.rect,self.bouncer*self.pixInc*math.sin(self.angle),self.pixInc)
 
+class Alien_mine(Alien_red):
+   id='yellow'
+   def __init__(self,canvas):
+        Alien.__init__(self,canvas)
+        super().__init__(self)
+        self.teleTick = 0
+        self.canvas=canvas
+        self.image=PhotoImage(file="ship.png")
+        self.color='yellow'
+        self.IPV = -10
 
-
-
+   def next(self):
+      self.aLoc += self.pixInc
+      self.teleTick += self.pixInc
+      if self.aLoc >= self.canvas.winfo_height() + self.aHeight/2:
+            self.deactivate()
+      if self._active == True:
+            if self.teleTick >=100:
+             wiggle=random.choice([-75,75])
+             self.teleTick=0
+            else:
+              wiggle=0
+            _coords = self.canvas.coords(self.rect)
+            if _coords[0] + wiggle <= 0 + self.width/2 or _coords[0] + wiggle >= self.canvas.winfo_width() - self.width/2:
+             wiggle=0
+            self.canvas.move(self.rect,wiggle,self.pixInc)
+            
 ###############################################################
 ################################################################
 def shoot(alien,x,y):
@@ -175,7 +195,8 @@ def main():
         #alien=Alien(canvas)
         #alien=Alien_red(canvas)
         #alien=Alien_green(canvas)
-        alien=Alien_blue(canvas)
+        #alien=Alien_blue(canvas)
+        alien=Alien_mine(canvas)
 
         alien.activate()
         

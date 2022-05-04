@@ -45,7 +45,7 @@ def shoot(canvas,color,aliens,booms,counter,xStart,xEnd,yStart,yEnd):
 def main():
     ##### Dictionary
     global record 
-    record = {Alien_red.id: 0, Alien_green.id: 0, Alien_blue.id: 0}
+    record = {Alien_red.id: 0, Alien_green.id: 0, Alien_blue.id: 0, Alien_mine.id: 0}
     recordStep=[]
     ##### create a window and canvas
     root = Tk() # instantiate a tkinter window
@@ -111,19 +111,17 @@ def main():
                    ship.deactivate()
                   
         if len(counter.lives) == 0: #cleaning up screen by deleting explosions and missiles when game ends
-            stop_game(canvas,counter)   
+            stop_game(canvas,ship,missiles,booms)   
 
         if game_over == True:
             file=open("game2.txt","w")
             for step in recordStep:
-                file.write(str(step[0])+" "+str(step[1])+" "+str(step[2])+"\n")
+                file.write(str(step[0])+" "+str(step[1])+" "+str(step[2])+" "+str(step[3])+"\n")
             file.close()
-            file=open("game2.txt","r")
-            print(file.read())
             break
         
         if t%100==0:
-          currentStep = (record[Alien_red.id],record[Alien_green.id],record[Alien_blue.id])
+          currentStep = (record[Alien_red.id],record[Alien_green.id],record[Alien_blue.id],record[Alien_mine.id])
           recordStep.append(currentStep)
 
 

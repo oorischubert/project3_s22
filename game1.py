@@ -23,7 +23,7 @@ def shoot(canvas,aliens,booms,ammunition,x,y):
      if a.is_shot(x,y):
         result="hit!"
         ammunition.increment(a.IPV)
-        a.deactivate()
+        record[a.id] += 1
         Explosion.add_explosion(canvas,booms,x,y,a.color,30)
         shot = True
         a.deactivate()
@@ -41,7 +41,9 @@ def shoot(canvas,aliens,booms,ammunition,x,y):
 ################
     
 def main(): 
-       
+        global record 
+        record = {Alien_red.id: 0, Alien_green.id: 0, Alien_blue.id: 0, Alien_mine.id: 0}
+        recordStep=[]
         ##### create a window, canvas 
         root = Tk() # instantiate a tkinter window
         my_image=PhotoImage(file="space1.png")
@@ -92,12 +94,20 @@ def main():
 
             if ammunition.count <= 0:
                 stop_game()
+
+            if t%100==0:
+               currentStep = (record[Alien_red.id],record[Alien_green.id],record[Alien_blue.id],record[Alien_mine.id])
+               recordStep.append(currentStep)
             
             if game_over == True:
                 ammunition.increment('reset')
                 for b in booms: #clean screen of explosions
                    b.deactivate()
                 canvas.create_text(canvas.winfo_width()/2,canvas.winfo_height()/2,text='GAME OVER',fill='orange',font=('courier',50))
+                file=open("game1.txt","w")
+                for step in recordStep:
+                  file.write(str(step[0])+" "+str(step[1])+" "+str(step[2])+" "+str(step[3])+"\n")
+                file.close()
                 break
 
         ### To complete
